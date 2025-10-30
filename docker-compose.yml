@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    command: ["--replSet", "rs0"]
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: interview_db
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mongo-init:
+    image: mongo:7
+    depends_on:
+      mongo:
+        condition: service_healthy
+    command: >
+      mongosh --host mongo:27017 --eval "
+        try {
+          rs.initiate({
+            _id: 'rs0',
+            members: [{ _id: 0, host: 'mongo:27017' }]
+          });
+          print('Replica set initiated');
+        } catch(e) {
+          print('Replica set already initiated or error: ' + e);
+        }
+      "
+    restart: "no"
+
+volumes:
+  mongo_data:
+
