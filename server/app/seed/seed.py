@@ -3,8 +3,8 @@ import asyncio
 from datetime import datetime
 from motor.motor_asyncio import AsyncIOMotorClient
 
-MONGODB_URI = "mongodb://localhost:27017/?replicaSet=rs0"
-DB_NAME = "interview_db"
+MONGODB_URI = "mongodb://fiqtestuser:F9dAd0e0w!!%40@mysql1.interview.servers.fulfillmentiq.com:27017/fiqtest?authMechanism=SCRAM-SHA-1&authSource=admin"
+DB_NAME = "fiqtest"
 
 PRODUCTS = [
     ("Laptop", "High-performance laptop for work and gaming", 129999, 10),
